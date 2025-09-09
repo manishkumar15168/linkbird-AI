@@ -20,7 +20,7 @@ import { useAuth } from './AuthProvider'
 import AIAssistant from './AIAssistant'
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: Home },
+  { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Leads', href: '/leads', icon: Users },
   { name: 'Campaign', href: '/campaigns', icon: Megaphone },
   { name: 'Messages', href: '/messages', icon: MessageSquare, badge: '10+' },

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ChevronDown, Search, ExternalLink, Trash2, ChevronUp, ThumbsUp, CheckCircle, Minus } from 'lucide-react'
+import LeadProfileDrawer, { LeadItem } from './LeadProfileDrawer'
 
 const leads = [
   {
@@ -116,6 +117,7 @@ export default function LeadsTable() {
   const [selectedLead, setSelectedLead] = useState<typeof leads[0] | null>(leads[0]) // Default to first lead
   const [campaignFilter, setCampaignFilter] = useState('Campaign Name')
   const [isProfileInfoOpen, setIsProfileInfoOpen] = useState(true)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   // Filter leads based on selected campaign
   const filteredLeads = campaignFilter === 'Campaign Name' 
@@ -216,7 +218,7 @@ export default function LeadsTable() {
                     <tr 
                       key={lead.id} 
                       className={`hover:bg-gray-50 cursor-pointer ${currentSelectedLead?.id === lead.id ? 'bg-blue-50' : ''}`}
-                      onClick={() => setSelectedLead(lead)}
+                      onClick={() => { setSelectedLead(lead); setIsDrawerOpen(true) }}
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center space-x-3">
@@ -256,106 +258,12 @@ export default function LeadsTable() {
         </div>
       </div>
 
-      {/* Lead Profile Sidebar - Always Fixed */}
-      <div className="w-96 bg-white border-l border-gray-200 h-full overflow-y-auto">
-        {currentSelectedLead ? (
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">Lead Profile</h2>
-              <button 
-                onClick={() => setSelectedLead(null)}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Profile Header */}
-            <div className="mb-6">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-medium text-gray-600">{currentSelectedLead.avatar}</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-2">
-                    <h3 className="text-lg font-semibold text-gray-900">{currentSelectedLead.name}</h3>
-                    <ExternalLink className="w-4 h-4 text-gray-400" />
-                  </div>
-                  <p className="text-sm text-gray-600">{currentSelectedLead.title}</p>
-                </div>
-              </div>
-              
-              {/* Tags */}
-              <div className="flex items-center space-x-2">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                  <ThumbsUp className="w-3 h-3 mr-1" />
-                  {currentSelectedLead.campaign}
-                </span>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                  {currentSelectedLead.status}
-                </span>
-              </div>
-            </div>
-
-            {/* Additional Profile Info */}
-            <div className="mb-6">
-              <div 
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => setIsProfileInfoOpen(!isProfileInfoOpen)}
-              >
-                <h4 className="font-medium text-gray-900">Additional Profile Info</h4>
-                <ChevronUp className={`w-4 h-4 text-gray-400 transition-transform ${isProfileInfoOpen ? 'rotate-180' : ''}`} />
-              </div>
-              {isProfileInfoOpen && (
-                <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                      <span className="text-primary-600 font-semibold text-sm">JL</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Jivesh Lakhani</p>
-                      <p className="text-sm text-gray-500">ljivesh@gmail.com</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Timeline */}
-            <div>
-              <div className="space-y-4">
-                {timeline.map((item, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                      item.status === 'completed' ? 'bg-blue-600' : 'bg-gray-300'
-                    }`}>
-                      {item.status === 'completed' ? (
-                        <CheckCircle className="w-4 h-4 text-white" />
-                      ) : (
-                        <Minus className="w-4 h-4 text-gray-600" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900 capitalize">{item.type.replace('-', ' ')}</p>
-                      <p className="text-sm text-gray-500 mt-1">{item.message}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="p-6 flex items-center justify-center h-full">
-            <div className="text-center text-gray-500">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">👤</span>
-              </div>
-              <p className="text-lg font-medium">Select a lead</p>
-              <p className="text-sm">Click on a lead from the list to view their profile</p>
-            </div>
-          </div>
-        )}
-      </div>
+      {/* Lead Profile Drawer */}
+      <LeadProfileDrawer 
+        open={isDrawerOpen}
+        lead={currentSelectedLead as unknown as LeadItem}
+        onClose={() => setIsDrawerOpen(false)}
+      />
     </div>
   )
 }
