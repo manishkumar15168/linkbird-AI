@@ -1,4 +1,4 @@
-import ResponsiveLayout from '@/components/ResponsiveLayout'
+import ResponsiveLayout from '../../components/ResponsiveLayout'
 import LeadsTable from '@/components/LeadsTable'
 import ProtectedRoute from '@/components/ProtectedRoute'
 

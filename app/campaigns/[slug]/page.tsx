@@ -1,4 +1,4 @@
-import ResponsiveLayout from '@/components/ResponsiveLayout'
+import ResponsiveLayout from '../../../components/ResponsiveLayout'
 import CampaignDetails from '@/components/CampaignDetails'
 import ProtectedRoute from '@/components/ProtectedRoute'
 

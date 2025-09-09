@@ -1,4 +1,4 @@
-import ResponsiveLayout from '@/components/ResponsiveLayout'
+import ResponsiveLayout from '../../components/ResponsiveLayout'
 import Dashboard from '@/components/Dashboard'
 import ProtectedRoute from '@/components/ProtectedRoute'
 
